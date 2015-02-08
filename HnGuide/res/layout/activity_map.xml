@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:dragView="@+id/dragView"
+        sothree:panelHeight="50dp"
+        sothree:paralaxOffset="100dp"
+        sothree:shadowHeight="4dp" >
+
+        <!-- MAIN CONTENT -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/layoutButtom"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/imgDiemDL"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginTop="5px"
+                    android:src="@drawable/diemdulich" />
+
+                <ImageView
+                    android:id="@+id/imgKhachSan"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginTop="5px"
+                    android:layout_toRightOf="@+id/imgDiemDL"
+                    android:src="@drawable/khachsan" />
+
+                <ImageView
+                    android:id="@+id/imgNhaHang"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginTop="5px"
+                    android:layout_toRightOf="@+id/imgKhachSan"
+                    android:src="@drawable/nhahang" />
+
+                <ImageView
+                    android:id="@+id/imgMuaSam"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginTop="5px"
+                    android:layout_toRightOf="@+id/imgNhaHang"
+                    android:src="@drawable/muasam" />
+
+                <ImageView
+                    android:id="@+id/imgGiaoThong"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginTop="5px"
+                    android:layout_toRightOf="@+id/imgMuaSam"
+                    android:src="@drawable/giaothong" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- SLIDING LAYOUT -->
+
+        <LinearLayout
+            android:id="@+id/dragView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eeeeee"
+            android:clickable="true"
+            android:focusable="false"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/layoutButtomSlide"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/imgSlide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/slide" />
+
+                <Button
+                    android:id="@+id/btnSlide"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/lvSlide"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+            </ListView>
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</RelativeLayout>

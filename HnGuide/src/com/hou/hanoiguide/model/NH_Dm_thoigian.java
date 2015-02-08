@@ -1,4 +1,4 @@
-package com.hou.hanoiguide;
+package com.hou.hanoiguide.model;
 
 /**
  * NH_Dm_thoigian

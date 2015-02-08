@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.hou.hanoiguide;
+package com.hou.hanoiguide.model;
 
 /**
  * NH_Ykien_phanhoi

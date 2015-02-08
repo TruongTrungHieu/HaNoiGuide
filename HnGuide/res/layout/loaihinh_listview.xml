@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_corner">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Large Text"
+            android:id="@+id/tv_Loaihinh"
+            android:padding="10sp"
+            android:paddingBottom="5sp"
+            android:textColor="@color/textColor" 
+            android:background="@drawable/textlines"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lv_Diadiem"
+            android:layout_centerHorizontal="true"
+            android:divider="@color/strokecolor"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="false"/>
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_Seemore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:text="Xem thêm..."
+        android:textSize="12dp"
+        android:layout_gravity="right"
+        android:clickable="true"
+        android:textColor="@android:color/black"/>
+
+
+</LinearLayout>
