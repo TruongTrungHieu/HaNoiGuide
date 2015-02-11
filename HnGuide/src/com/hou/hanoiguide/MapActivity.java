@@ -3,6 +3,11 @@ package com.hou.hanoiguide;
 import java.util.ArrayList;
 
 import com.cipolat.slidenavigation.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -14,7 +19,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
 
 import android.app.Activity;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -27,7 +34,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-public class MapActivity extends Activity implements OnMapReadyCallback {
+public class MapActivity extends Activity implements OnMapReadyCallback,ConnectionCallbacks, OnConnectionFailedListener {
 	GoogleMap mMap;
 	ImageView imgDiemDL, imgKhachSan, imgGPS, imgNhaHang, imgMuaSam,
 			imgGiaoThong;
@@ -37,6 +44,16 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 
 	Button btnSlide;
 	RelativeLayout rllBottom;
+	/**
+     * Provides the entry point to Google Play services.
+     */
+    protected GoogleApiClient mGoogleApiClient;
+
+
+    /**
+     * Represents a geographical location.
+     */
+    protected Location mLastLocation;
 
 	// MyArrayAdapterPlace adapter;
 	ArrayAdapter adapter;
@@ -49,6 +66,12 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+        }
+		buildGoogleApiClient();
 		// setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
 		btnSlide = (Button) findViewById(R.id.btnSlide);
 		rllBottom = (RelativeLayout) findViewById(R.id.layoutButtom);
@@ -101,10 +124,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 				.findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 		mMap = mapFragment.getMap();
-		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		mMap.getUiSettings().setMyLocationButtonEnabled(true);
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(21.028860,
-				105.852330), 13));
+		mMap.setMyLocationEnabled(true);
+		//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(21.028860,105.852330), 13));
 
 		lvSlide = (ListView) findViewById(R.id.lvSlide);
 		lstPlace = new ArrayList<MyPlace>();
@@ -174,6 +195,16 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 		FixWidthBottom(imgDiemDL, imgKhachSan, imgNhaHang, imgMuaSam,
 				imgGiaoThong);
 	}
+	/**
+     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
+     */
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
 
 	public void ImgIsSelected() {
 		if (((status >> 4) & 1) == 1) {
@@ -307,9 +338,50 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 	}
 
 	@Override
-	public void onMapReady(GoogleMap arg0) {
+	public void onMapReady(GoogleMap map) {
 		// TODO Auto-generated method stub
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		map.getUiSettings().setMyLocationButtonEnabled(true);		
 		ImgIsSelected();
-		 mLayout.setVisibility(View.VISIBLE);
+		mLayout.setVisibility(View.VISIBLE);
+	}
+	
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		mGoogleApiClient.connect();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		// TODO Auto-generated method stub
+		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+		LatLng myLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+		mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+		mMap.animateCamera(CameraUpdateFactory.zoomIn());
+	}
+
+	@Override
+	public void onConnectionSuspended(int cause) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
 	}
 }
