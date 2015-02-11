@@ -18,7 +18,7 @@ public class HomeFragment extends Fragment {
             Bundle savedInstanceState) {
   
         View rootView = inflater.inflate(R.layout.home, container, false);
-          
+        
         return rootView;
     }
 }

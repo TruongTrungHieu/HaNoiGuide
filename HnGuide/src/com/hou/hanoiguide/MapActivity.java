@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MapActivity extends Activity implements OnMapReadyCallback,ConnectionCallbacks, OnConnectionFailedListener {
 	GoogleMap mMap;
@@ -374,8 +375,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback,Connecti
 		// TODO Auto-generated method stub
 		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 		LatLng myLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-		mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-		mMap.animateCamera(CameraUpdateFactory.zoomIn());
+		Toast.makeText(getApplicationContext(), myLocation.latitude + "", Toast.LENGTH_LONG).show();
+		//mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
+		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
 	}
 
 	@Override
